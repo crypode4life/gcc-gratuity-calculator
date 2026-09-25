@@ -4,8 +4,8 @@
 <meta name="crypode-build" content="crypode-build-2026-09-25c">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="End-of-Service Gratuity Calculator — Calculate your gratuity across all 6 GCC countries with country-specific labor law calculations.">
-<title>Gratuity Calculator — Crypode</title>
+<meta name="description" content="Oman End-of-Service Gratuity Calculator — Royal Decree 53/2023, Article 61. Date-based calculation using the Ministry of Labour method, including service before and after 31 July 2023.">
+<title>Oman Gratuity Calculator (RD 53/2023) — Crypode</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root { --gold: #C9A84C; --gold-light: #E8C97A; --gold-dark: #A07830; --dark: #0D0D0D; --dark-2: #141414; --dark-3: #1C1C1C; --cream: #F5F0E8; --cream-soft: #EDE8DF; --paper: #F7F3EA; --text-dark: #20201D; --text-mid: #4A4845; --text-muted: #888880; }
@@ -57,6 +57,27 @@
   .error { color: #ff6b6b; background: rgba(255,107,107,0.1); padding: 12px; border-left: 3px solid #ff6b6b; margin: 16px 0; border-radius: 2px; }
   @media (max-width: 768px) { nav { padding: 14px 24px; } nav ul { gap: 16px; } .hero { padding: 100px 24px 60px; } .tool-section { padding: 60px 24px; } .container { padding: 0 24px; } .tool-grid { grid-template-columns: 1fr; } }
 
+
+  /* ── Oman gratuity form ── */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+  .hint { display: block; font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; line-height: 1.5; text-transform: none; letter-spacing: 0; }
+  input[type="date"] { color-scheme: dark; width: 100%; box-sizing: border-box; min-height: 46px; }
+  .grat-total { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold); margin: 4px 0 6px; }
+  .grat-sub { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 18px; }
+  .grat-formula { font-size: 0.9rem; color: var(--cream-soft); line-height: 1.8; }
+  .grat-formula code { font-family: inherit; color: var(--gold-light); }
+  .grat-notes { margin: 0; padding-inline-start: 20px; color: var(--cream-soft); font-size: 0.88rem; line-height: 1.65; }
+  .grat-notes li { margin-bottom: 8px; }
+  .grat-notes li.warn { color: #E8C97A; }
+  .result-item .result-label small { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+  @media print {
+    #cpPrintSheet .grat-total { font-size: 20pt; color: #A07830 !important; margin: 2px 0 4px; }
+    #cpPrintSheet .grat-sub { font-size: 9pt; color: #555 !important; margin-bottom: 10px; }
+    #cpPrintSheet .grat-notes { padding-left: 18px; font-size: 9.5pt; }
+    #cpPrintSheet .grat-formula { font-size: 10pt; }
+    #cpPrintSheet .result-item .result-label small { font-size: 8.5pt; color: #666 !important; }
+  }
   /* ── Licence panel (PayPal) ── */
   .license-card { position: relative; background: var(--dark-3); border: 1px solid rgba(201,168,76,0.2); padding: 30px 32px; margin-bottom: 32px; }
   .license-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
@@ -134,8 +155,8 @@
   <div class="hero-bg"></div>
   <div class="hero-content">
     <div class="eyebrow">💼 Paid Tool</div>
-    <h1>Gratuity <span class="sub">Calculator</span></h1>
-    <p>Calculate your end-of-service entitlement across all 6 GCC countries. Country-specific labor law calculations with AI guidance.</p>
+    <h1>Oman Gratuity <span class="sub">Calculator</span></h1>
+    <p>Your end-of-service gratuity under Oman Labour Law (Royal Decree 53/2023, Article 61), calculated from your actual dates using the Ministry of Labour method, with a full breakdown you can print.</p>
   </div>
 </section>
 
@@ -146,77 +167,77 @@
     <div class="tool-grid">
       <div class="tool-card">
         <h2>Your Employment</h2>
-
         <div class="form-group">
-          <label>GCC Country</label>
-          <select id="country">
-            <option value="oman">🇴🇲 Oman</option>
-            <option value="uae">🇦🇪 United Arab Emirates</option>
-            <option value="saudi">🇸🇦 Saudi Arabia</option>
-            <option value="kuwait">🇰🇼 Kuwait</option>
-            <option value="bahrain">🇧🇭 Bahrain</option>
-            <option value="qatar">🇶🇦 Qatar</option>
+          <label for="coverage">Social Protection Fund coverage</label>
+          <select id="coverage">
+            <option value="no">Not covered — most expatriate workers</option>
+            <option value="yes">Covered — most Omani nationals</option>
+            <option value="unsure">Not sure</option>
           </select>
+          <span class="hint">Article 61 gratuity applies to workers who do not benefit from the Social Protection Law.</span>
         </div>
-
-        <div class="form-group">
-          <label>Monthly Salary (Basic)</label>
-          <input type="number" id="salary" placeholder="e.g., 5000" step="0.01" min="0">
-        </div>
-
-        <div class="form-group">
-          <label>Years of Service</label>
-          <input type="number" id="yearsOfService" placeholder="e.g., 10" step="0.1" min="0" max="70">
-        </div>
-
-        <div class="section-title">Contract & Termination</div>
-
-        <div class="form-group">
-          <label>Contract Type</label>
-          <select id="contractType">
-            <option value="unlimited">Unlimited (Open-ended)</option>
-            <option value="limited">Fixed-term Contract</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Separation Reason</label>
-          <select id="separationReason">
-            <option value="resignation">Resignation (Employee-initiated)</option>
-            <option value="termination">Termination without cause</option>
-            <option value="termination-cause">Termination with cause</option>
-            <option value="retirement">Retirement</option>
-            <option value="end-of-contract">End of contract (not renewed)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Currency</label>
-          <select id="currency">
-            <option value="OMR">OMR (Omani Rial)</option>
-            <option value="AED">AED (UAE Dirham)</option>
-            <option value="SAR">SAR (Saudi Riyal)</option>
-            <option value="KWD">KWD (Kuwaiti Dinar)</option>
-            <option value="BHD">BHD (Bahraini Dinar)</option>
-            <option value="QAR">QAR (Qatari Riyal)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <div class="checkbox-group">
-            <input type="checkbox" id="islamicMode">
-            <label for="islamicMode">Islamic Finance Consideration</label>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="startDate">Employment start date</label>
+            <input type="date" id="startDate">
+          </div>
+          <div class="form-group">
+            <label for="endDate">Last working day</label>
+            <input type="date" id="endDate">
           </div>
         </div>
+        <div class="form-group">
+          <label for="salary">Final monthly basic salary (OMR)</label>
+          <input type="number" id="salary" placeholder="e.g. 600" step="0.001" min="0" inputmode="decimal">
+          <span class="hint">Basic salary only, as shown in your contract or payslip. Housing, transport and other allowances are not included.</span>
+        </div>
+        <div class="form-group">
+          <label for="allowances">Monthly allowances (OMR) — optional</label>
+          <input type="number" id="allowances" placeholder="e.g. 250" step="0.001" min="0" inputmode="decimal">
+          <span class="hint">For reference only; not used in the statutory calculation.</span>
+        </div>
 
+        <div class="section-title">Adjustments (optional)</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="excludedDays">Unpaid leave days</label>
+            <input type="number" id="excludedDays" placeholder="0" step="1" min="0" inputmode="numeric">
+            <span class="hint">Unpaid special leave counts as service but is excluded from gratuity.</span>
+          </div>
+          <div class="form-group">
+            <label for="settled">Gratuity already paid (OMR)</label>
+            <input type="number" id="settled" placeholder="0" step="0.001" min="0" inputmode="decimal">
+            <span class="hint">Any end-of-service amount already settled for this employment.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="scheme">Employer savings or supplementary scheme</label>
+          <select id="scheme">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+            <option value="unsure">Not sure</option>
+          </select>
+          <span class="hint">Some employers run a scheme in place of gratuity (Article 48).</span>
+        </div>
+
+        <div class="section-title">Leaving</div>
+        <div class="form-group">
+          <label for="reason">Reason for leaving</label>
+          <select id="reason">
+            <option value="resignation">Resignation</option>
+            <option value="termination">Termination by employer</option>
+            <option value="expiry">Contract ended / not renewed</option>
+            <option value="retirement">Retirement</option>
+            <option value="misconduct">Dismissal for misconduct (Article 41)</option>
+          </select>
+        </div>
         <button class="btn-primary" onclick="calculateGratuity()">📊 Calculate Gratuity</button>
         <button class="btn-primary btn-secondary" onclick="resetForm()">Reset</button>
       </div>
-
       <div class="tool-card">
         <h2>Your Entitlement</h2>
         <div id="resultsContainer">
-          <p class="placeholder">Enter your employment details to calculate gratuity</p>
+          <p class="placeholder">Enter your employment details to calculate your gratuity</p>
         </div>
       </div>
     </div>
@@ -435,82 +456,100 @@ const CrypodeLicense = (() => {
 </script>
 <script>
   function resetForm() {
-    document.getElementById('country').value = 'oman';
-    document.getElementById('salary').value = '';
-    document.getElementById('yearsOfService').value = '';
-    document.getElementById('contractType').value = 'unlimited';
-    document.getElementById('separationReason').value = 'resignation';
-    document.getElementById('currency').value = 'OMR';
-    document.getElementById('islamicMode').checked = false;
-    document.getElementById('resultsContainer').innerHTML = '<p class="placeholder">Enter your employment details to calculate gratuity</p>';
+    ['startDate','endDate','salary','allowances','excludedDays','settled'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('coverage').value = 'no';
+    document.getElementById('scheme').value = 'no';
+    document.getElementById('reason').value = 'resignation';
+    lastGratuityHtml = '';
+    document.getElementById('resultsContainer').innerHTML = '<p class="placeholder">Enter your employment details to calculate your gratuity</p>';
   }
+
+  const REASONS = { resignation: 'Resignation', termination: 'Termination by employer', expiry: 'Contract ended / not renewed', retirement: 'Retirement', misconduct: 'Dismissal for misconduct (Article 41)' };
+  const omr = n => Number(n).toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' OMR';
+  const yrs = n => (Math.round(n * 1000) / 1000).toLocaleString('en-US', { maximumFractionDigits: 3 }) + ' yrs';
+  const fmtDate = s => new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  const span = t => [t.y && `${t.y} year${t.y > 1 ? 's' : ''}`, t.m && `${t.m} month${t.m > 1 ? 's' : ''}`, t.d && `${t.d} day${t.d > 1 ? 's' : ''}`].filter(Boolean).join(', ') || '0 days';
+  const val = id => document.getElementById(id).value;
+
+  const NOTE_TEXT = {
+    split: 'Your service spans the new Labour Law. Following the Ministry of Labour clarification, service up to 31 July 2023 uses the previous formula and service from 1 August 2023 uses Article 61; the two parts are added together.',
+    oldLawOnly: 'Your employment ended before 1 August 2023, so the whole period is calculated under the previous Labour Law (Royal Decree 35/2003) formula.',
+    underOneYear: 'Your total service is under one year. Some employers and guidance apply a one-year minimum before any gratuity is paid; confirm this with your employer or the Ministry of Labour.',
+    savings: 'Gratuity is calculated up to 18 July 2027. From 19 July 2027 expatriate workers are scheduled to move to the Social Protection Fund savings system (Royal Decree 60/2025), which replaces gratuity for service after that date. Gratuity accrued before then is still payable.',
+    coverageUnsure: 'You are not sure about Social Protection Fund coverage. This estimate assumes you are not covered; workers who benefit from the Social Protection Law are not entitled to Article 61 gratuity.',
+    schemeYes: 'Your employer runs a savings or supplementary scheme. Under Article 48 such a scheme may be paid in place of, or offset against, this gratuity; check your scheme rules.',
+    schemeUnsure: 'If your employer runs a savings or supplementary scheme (Article 48), it may replace or offset this gratuity.',
+    misconduct: 'Workers dismissed for misconduct under Article 41 may lose their entitlement to gratuity, so the estimate is shown as zero. If you dispute the dismissal, seek advice from the Ministry of Labour.',
+    settled: 'The amount you entered as already paid has been deducted.',
+    excluded: 'Unpaid leave days are excluded from the gratuity period (taken from service after 1 August 2023 first).',
+    allowances: 'Allowances are not part of the statutory basic wage calculation. Your contract may be more generous; if so, it takes precedence.'
+  };
+  const WARN = new Set(['underOneYear', 'coverageUnsure', 'schemeYes', 'misconduct', 'savings']);
+
+  let lastInputs = null;
 
   async function calculateGratuity() {
     if (!CrypodeLicense.requireUnlocked()) return;
-    const country = document.getElementById('country').value;
-    const salary = parseFloat(document.getElementById('salary').value);
-    const yearsOfService = parseFloat(document.getElementById('yearsOfService').value);
-    const separationReason = document.getElementById('separationReason').value;
-    const currency = document.getElementById('currency').value;
-
-    if (!salary || !yearsOfService) {
-      showError('Please fill all required fields');
-      return;
-    }
-
-    document.getElementById('resultsContainer').innerHTML = '<p class="placeholder">Calculating...</p>';
-
-    let gratuity = 0;
-    const countryData = {
-      oman: { name: 'Oman', law: 'Royal Decree 53/2023' },
-      uae: { name: 'UAE', law: 'UAE Labour Law' },
-      saudi: { name: 'Saudi Arabia', law: 'Saudi Labor Law' },
-      kuwait: { name: 'Kuwait', law: 'Kuwaiti Labor Law' },
-      bahrain: { name: 'Bahrain', law: 'Bahraini Labor Law' },
-      qatar: { name: 'Qatar', law: 'Qatari Labor Law' }
+    const inp = {
+      coverage: val('coverage'), start: val('startDate'), end: val('endDate'),
+      salary: val('salary'), allowances: val('allowances'),
+      excludedDays: val('excludedDays'), settled: val('settled'),
+      scheme: val('scheme'), reason: val('reason')
     };
-
-    // Simplified calculation
-    if (country === 'oman') {
-      if (yearsOfService < 1) gratuity = 0;
-      else if (yearsOfService < 3) gratuity = (salary / 30) * 15 * yearsOfService;
-      else gratuity = salary * Math.min(yearsOfService, 3);
-    } else {
-      gratuity = (salary / 30) * 30 * yearsOfService;
-    }
-
-    // Adjust for separation
-    if (separationReason === 'resignation') gratuity *= 0.5;
-    else if (separationReason === 'termination-cause') gratuity = 0;
-
-    displayResults(country, salary, yearsOfService, gratuity, currency, countryData[country].law);
+    const r = OmanGratuity.calculate(inp);
+    if (r.error === 'dates') return showError('Please enter your employment start date and last working day.');
+    if (r.error === 'order') return showError('The last working day must be after the start date.');
+    if (r.error === 'salary') return showError('Please enter your final monthly basic salary.');
+    lastInputs = inp;
+    displayResults(inp, r);
   }
 
-  function displayResults(country, salary, yearsOfService, gratuity, currency, lawReference) {
-    const countryNames = { oman: 'Oman', uae: 'United Arab Emirates', saudi: 'Saudi Arabia', kuwait: 'Kuwait', bahrain: 'Bahrain', qatar: 'Qatar' };
-
-    let html = `
+  function displayResults(inp, r) {
+    let html;
+    if (r.covered) {
+      html = `
       <div class="result-box">
-        <h3>Gratuity Entitlement</h3>
-        <div class="result-item">
-          <span class="result-label">Monthly Salary</span>
-          <span class="result-value">${salary.toFixed(2)} ${currency}</span>
-        </div>
-        <div class="result-item">
-          <span class="result-label">Years of Service</span>
-          <span class="result-value">${yearsOfService.toFixed(1)} years</span>
-        </div>
-        <div class="result-item" style="border-bottom:2px solid var(--gold);padding-top:12px;">
-          <span class="result-label" style="font-weight:600;">Estimated Gratuity</span>
-          <span class="result-value">${gratuity.toFixed(2)} ${currency}</span>
-        </div>
-      </div>
+        <h3>Article 61 gratuity does not apply</h3>
+        <p class="grat-formula">Workers who benefit from the Social Protection Law are not entitled to the employer-paid end-of-service gratuity under Article 61 of the Labour Law. Your end-of-service benefits come through the Social Protection Fund instead.</p>
+        <p class="grat-formula" style="margin-top:10px">Contact the Social Protection Fund or your employer's HR department to confirm your benefits. If you were not in fact covered for all or part of your service, choose "Not covered" or "Not sure" to see an estimate.</p>
+      </div>`;
+    } else {
+      const lines = [];
+      lines.push(`<div class="result-item"><span class="result-label">Final basic salary</span><span class="result-value">${omr(r.salary)}</span></div>`);
+      lines.push(`<div class="result-item"><span class="result-label">Total service<small>${fmtDate(inp.start)} – ${fmtDate(inp.end)}</small></span><span class="result-value">${span(r.totalService)}</span></div>`);
+      if (r.pre.years > 0) lines.push(`<div class="result-item"><span class="result-label">Service before 1 Aug 2023<small>Previous law: ½ month × ${yrs(r.pre.tier1)}${r.pre.tier2 > 0 ? ` + 1 month × ${yrs(r.pre.tier2)}` : ''}</small></span><span class="result-value">${omr(r.pre.amount)}</span></div>`);
+      if (r.post.years > 0) lines.push(`<div class="result-item"><span class="result-label">Service from 1 Aug 2023<small>Article 61: 1 month × ${yrs(r.post.years)}</small></span><span class="result-value">${omr(r.post.amount)}</span></div>`);
+      if (r.excluded > 0) lines.push(`<div class="result-item"><span class="result-label">Unpaid leave excluded</span><span class="result-value">${r.excluded} days</span></div>`);
+      if (r.settled > 0) lines.push(`<div class="result-item"><span class="result-label">Less: already paid</span><span class="result-value">− ${omr(r.settled)}</span></div>`);
 
+      const formula = [];
+      if (r.pre.years > 0) formula.push(`<div><code>${omr(r.salary)}</code> × ½ × ${yrs(r.pre.tier1)}${r.pre.tier2 > 0 ? ` + <code>${omr(r.salary)}</code> × ${yrs(r.pre.tier2)}` : ''} = <code>${omr(r.pre.amount)}</code></div>`);
+      if (r.post.years > 0) formula.push(`<div><code>${omr(r.salary)}</code> × ${yrs(r.post.years)} = <code>${omr(r.post.amount)}</code></div>`);
+      if (r.pre.years > 0 && r.post.years > 0) formula.push(`<div>Total: <code>${omr(r.pre.amount)}</code> + <code>${omr(r.post.amount)}</code> = <code>${omr(r.gross)}</code></div>`);
+      if (r.settled > 0) formula.push(`<div>Less already paid: <code>${omr(r.gross)}</code> − <code>${omr(r.settled)}</code> = <code>${omr(Math.max(0, r.gross - r.settled))}</code></div>`);
+
+      html = `
       <div class="result-box">
-        <h3>Country & Legal Reference</h3>
-        <p style="color:var(--cream);margin-bottom:10px;"><strong>${countryNames[country]}</strong><br><span style="font-size:0.9rem;color:var(--text-muted);">Based on: ${lawReference}</span></p>
+        <h3>Estimated Gratuity</h3>
+        <div class="grat-total">${omr(r.net)}</div>
+        <div class="grat-sub">${REASONS[inp.reason]} · Legal basis: Article 61, Royal Decree 53/2023</div>
+        ${lines.join('')}
       </div>
-    `;
+      <div class="result-box">
+        <h3>How it was calculated</h3>
+        <div class="grat-formula">${formula.join('') || '<div>No eligible service period.</div>'}</div>
+      </div>`;
+    }
+    const notes = r.notes.filter(n => NOTE_TEXT[n] && !(r.covered && n !== 'allowances'));
+    notes.push('general');
+    const noteItems = notes.map(n => n === 'general'
+      ? `<li>This estimate is based on Article 61 of the Oman Labour Law (Royal Decree 53/2023) and the Ministry of Labour's calculation method. Your contract, an employer scheme, excluded leave, settlements or other circumstances may change your final entitlement.</li>`
+      : `<li class="${WARN.has(n) ? 'warn' : ''}">${NOTE_TEXT[n]}</li>`).join('');
+    html += `
+      <div class="result-box">
+        <h3>Notes</h3>
+        <ul class="grat-notes">${noteItems}</ul>
+      </div>`;
 
     lastGratuityHtml = html;
     document.getElementById('resultsContainer').innerHTML = html +
@@ -520,10 +559,10 @@ const CrypodeLicense = (() => {
   let lastGratuityHtml = '';
   function printGratuity() {
     CrypodePrint.print({
-      title: 'End-of-Service Gratuity Estimate',
+      title: 'Oman End-of-Service Gratuity Estimate',
       bodyHtml: lastGratuityHtml,
       branded: true, lang: 'en', dir: 'ltr',
-      disclaimer: 'This is an estimate based on the labour law reference shown and the details you entered. It is not legal advice. Your final entitlement may differ; confirm it with your employer or the relevant Ministry of Labour.'
+      disclaimer: 'This calculator provides an estimate based on Article 61 of Oman Labour Law (Royal Decree 53/2023) and the Ministry of Labour calculation method. It is not legal advice. Contractual benefits, employer savings programmes, Social Protection Law coverage, excluded periods of leave, settlements and other circumstances may affect the final entitlement.'
     });
   }
 
@@ -605,6 +644,91 @@ const CrypodePrint = (() => {
   }
 
   return { print, md, plain, esc, copy, download };
+})();
+</script>
+<script>
+/* ── Oman end-of-service gratuity engine ──
+   Labour Law RD 53/2023 Art. 61 + Ministry of Labour clarification (Oct 2024):
+   • service before 1 Aug 2023 → old RD 35/2003 formula: 15 days' (½ month) basic per year for the
+     first 3 years, then 1 month per year
+   • service from 1 Aug 2023 → at least 1 month's basic per year
+   • base = LAST basic wage; fractions of a year are pro-rated
+   • unpaid special leave counts as service but is excluded from the gratuity (Art. 80)
+   • expat savings system (Social Protection Law, as amended by RD 60/2025) scheduled from 19 Jul 2027 */
+const OmanGratuity = (() => {
+  const NEW_LAW = Date.UTC(2023, 7, 1);      // 1 Aug 2023: first day under the Art. 61 formula
+  const SAVINGS = Date.UTC(2027, 6, 19);     // 19 Jul 2027: savings system scheduled start
+  const DAY = 86400000;
+
+  const parse = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : NaN; };
+  const addYears = (t, n) => { const d = new Date(t); return Date.UTC(d.getUTCFullYear() + n, d.getUTCMonth(), d.getUTCDate()); };
+
+  // Years in [a, b): whole anniversary years + remaining days / 365
+  function years(a, b) {
+    if (!(b > a)) return 0;
+    let n = 0; while (addYears(a, n + 1) <= b) n++;
+    return n + (b - addYears(a, n)) / DAY / 365;
+  }
+  // Calendar breakdown of [a, b)
+  function ymd(a, b) {
+    const A = new Date(a), B = new Date(b);
+    let y = B.getUTCFullYear() - A.getUTCFullYear(), m = B.getUTCMonth() - A.getUTCMonth(), d = B.getUTCDate() - A.getUTCDate();
+    if (d < 0) { m--; d += new Date(Date.UTC(B.getUTCFullYear(), B.getUTCMonth(), 0)).getUTCDate(); }
+    if (m < 0) { y--; m += 12; }
+    return { y, m, d };
+  }
+
+  function calculate(inp) {
+    const S = parse(inp.start), last = parse(inp.end);
+    const salary = +inp.salary, excluded = Math.max(0, +inp.excludedDays || 0), settled = Math.max(0, +inp.settled || 0);
+    if (isNaN(S) || isNaN(last)) return { error: 'dates' };
+    if (last < S) return { error: 'order' };
+    if (!(salary > 0)) return { error: 'salary' };
+
+    const E = last + DAY;                                  // service end (exclusive) = day after last working day
+    const notes = [];
+    const covered = inp.coverage === 'yes';
+    let accrualEnd = E, savingsCapped = false;
+    if (!covered && E > SAVINGS) { accrualEnd = SAVINGS; savingsCapped = true; }
+
+    const preEnd = Math.min(accrualEnd, NEW_LAW), postStart = Math.max(S, NEW_LAW);
+    let preY = S < NEW_LAW ? years(S, preEnd) : 0;
+    let postY = accrualEnd > NEW_LAW ? years(postStart, accrualEnd) : 0;
+
+    // Excluded unpaid-leave days: taken from the Art. 61 period first, then earlier service
+    let exY = excluded / 365;
+    const fromPost = Math.min(postY, exY); postY -= fromPost; exY -= fromPost;
+    const fromPre = Math.min(preY, exY); preY -= fromPre;
+
+    const preTier1 = Math.min(preY, 3), preTier2 = Math.max(preY - 3, 0);
+    const preAmount = salary * (0.5 * preTier1 + preTier2);
+    const postAmount = salary * postY;
+    const gross = preAmount + postAmount;
+    let net = Math.max(0, gross - settled);
+
+    const totalService = ymd(S, E), totalYears = years(S, E);
+    if (inp.reason === 'misconduct') {
+      notes.push('misconduct'); net = 0;
+    }
+    if (totalYears < 1) notes.push('underOneYear');
+    if (S < NEW_LAW && E > NEW_LAW) notes.push('split');
+    if (E <= NEW_LAW) notes.push('oldLawOnly');
+    if (savingsCapped) notes.push('savings');
+    if (inp.coverage === 'unsure') notes.push('coverageUnsure');
+    if (inp.scheme === 'yes') notes.push('schemeYes');
+    if (inp.scheme === 'unsure') notes.push('schemeUnsure');
+    if (settled > 0) notes.push('settled');
+    if (excluded > 0) notes.push('excluded');
+    if (+inp.allowances > 0) notes.push('allowances');
+
+    return {
+      covered, salary, excluded, settled, gross, net, notes,
+      totalService, totalYears, savingsCapped,
+      pre: { years: preY, tier1: preTier1, tier2: preTier2, amount: preAmount },
+      post: { years: postY, amount: postAmount }
+    };
+  }
+  return { calculate, years, parse };
 })();
 </script>
 </body>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://gcc-gratuity-calculator.vercel.app/sitemap.xml
